@@ -1,0 +1,107 @@
+{
+  "id": "card",
+  "type": "SharedSlice",
+  "name": "Cards",
+  "description": "Card",
+  "variations": [
+    {
+      "id": "default",
+      "name": "simple",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "title",
+            "placeholder": ""
+          }
+        },
+        "subtitle": {
+          "type": "Text",
+          "config": {
+            "label": "subtitle",
+            "placeholder": ""
+          }
+        },
+        "background_image": {
+          "type": "Image",
+          "config": {
+            "label": "background_image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "action_link": {
+          "type": "Link",
+          "config": {
+            "label": "action_link",
+            "placeholder": "#",
+            "allowTargetBlank": true,
+            "select": null
+          }
+        },
+        "text_position": {
+          "type": "Select",
+          "config": {
+            "label": "text_position",
+            "placeholder": "",
+            "options": [
+              "left",
+              "right",
+              "top",
+              "bottom"
+            ],
+            "default_value": "left"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "background_color",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      }
+    },
+    {
+      "id": "slide",
+      "name": "slide",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "title",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      }
+    }
+  ]
+}
