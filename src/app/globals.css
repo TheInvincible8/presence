@@ -2,26 +2,104 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'SF Pro';
+    src: url('/public/SF-Pro-Display-Light.woff') format('woff');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'SF Pro';
+    src: url('/public/SF-Pro-Text-Black.woff') format('woff');
+    font-weight: 900;
+}
+
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+}
+
+html {
+    font-family: 'SF Pro', sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+    }
+}
+
+@media (min-width: 640px) {
+    html {
+        font-size: 10px
+    }
+
+    .container_grid {
+        grid-template-rows: 4rem;
+        grid-template-columns: repeat(6, 9.625rem);
+        grid-auto-rows: 9.625rem;
+    }
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 10px;
+    }
+
+    .container_grid {
+        grid-template-rows: 4rem;
+        grid-template-columns: repeat(8, 8.24691rem);
+        grid-auto-rows: 8.24691rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    html {
+        font-size: 10px
+    }
+
+    .container_grid {
+        grid-template-rows: 4rem;
+        grid-auto-rows: 11.3rem;
+        grid-template-columns: repeat(9, 11.3rem);
+    }
+}
+
+@media (min-width: 1280px) {
+    html {
+        font-size: 10px
+    }
+
+    .container_grid {
+        grid-template-rows: 4rem;
+        grid-auto-rows: 10.6rem;
+        grid-template-columns: repeat(12, 10.6rem);
+    }
+}
+
+@media (min-width: 1536px) {
+    html {
+        font-size: 10px
+    }
+
+    .container_grid {
+        grid-template-rows: 4rem;
+        grid-auto-rows: 12.8rem;
+        grid-template-columns: repeat(12, 12.8rem);
+    }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(to bottom,
+            transparent,
+            rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+    background-repeat: no-repeat;
+}
+
+nav :last-child {
+    margin-right: 0;
 }

@@ -1,0 +1,29 @@
+{
+    "id": "header",
+    "label": "Header",
+    "format": "custom",
+    "repeatable": false,
+    "status": true,
+    "json": {
+        "Main": {
+            "name": {
+                "type": "Text",
+                "config": {
+                    "label": "name",
+                    "placeholder": "Your Name Here"
+                }
+            },
+            "slices": {
+                "type": "Slices",
+                "fieldset": "Slice Zone",
+                "config": {
+                    "choices": {
+                        "navigation": {
+                            "type": "SharedSlice"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

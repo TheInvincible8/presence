@@ -1,0 +1,29 @@
+{
+    "id": "footer",
+    "label": "Footer",
+    "format": "custom",
+    "repeatable": false,
+    "status": true,
+    "json": {
+        "Main": {
+            "cc_text": {
+                "type": "Text",
+                "config": {
+                    "label": "cc_text",
+                    "placeholder": "Made With ♥️"
+                }
+            },
+            "slices": {
+                "type": "Slices",
+                "fieldset": "Slice Zone",
+                "config": {
+                    "choices": {
+                        "navigation": {
+                            "type": "SharedSlice"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
