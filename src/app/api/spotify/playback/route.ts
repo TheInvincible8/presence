@@ -1,5 +1,9 @@
-export async function GET(req: Request, res: Response) {
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(req: NextRequest, res: NextResponse) {
     console.log("global access token ==> ", process.env.SPOTIFY_ACCESS_TOKEN);
+    if (process.env.SPOTIFY_ACCESS_TOKEN == undefined)
+        return Response.redirect(req.nextUrl.origin + "/api/spotify/login");
     const currentPlaying = await global.fetch(
         "https://api.spotify.com/v1/me/player/currently-playing",
         {
@@ -21,11 +25,9 @@ export async function GET(req: Request, res: Response) {
     }
 
     // not playing any song
-    if (currentPlaying.status === 204) {
-        return Response.json({
-            error: "offline",
-        });
-    }
+    return Response.json({
+        error: "offline",
+    });
 }
 
 // idk what the hell it do :)
