@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Episode, Playback, Track } from "@/types";
+//Keep recent playback in memory ( just in case );
+let RecentPlayback: Playback<Track> | Playback<Episode>;
 
-export async function GET(req: NextRequest, res: NextResponse) {
-    console.log("global access token ==> ", process.env.SPOTIFY_ACCESS_TOKEN);
-    if (process.env.SPOTIFY_ACCESS_TOKEN == undefined)
-        return Response.redirect(req.nextUrl.origin + "/api/spotify/login");
-    const currentPlaying = await global.fetch(
+function getCurrentlyPlaying() {
+    return global.fetch(
         "https://api.spotify.com/v1/me/player/currently-playing",
         {
             headers: {
@@ -12,22 +12,69 @@ export async function GET(req: NextRequest, res: NextResponse) {
             },
         },
     );
+}
+
+export async function GET(req: NextRequest, res: NextResponse) {
+    if (process.env.SPOTIFY_ACCESS_TOKEN == undefined) {
+        return NextResponse.json(
+            {
+                error: "token_unavailable",
+                url: req.nextUrl.origin + "/api/spotify/login",
+                message: "Cannot Access Spotify",
+            },
+            {
+                status: 403,
+            },
+        );
+    }
+
+    let currentPlaying = await getCurrentlyPlaying();
+
+    // token expired
+    if (currentPlaying.status === 401) {
+        await global.fetch(req.nextUrl.origin + "/api/spotify/refresh_token");
+        // retry one more time
+        currentPlaying = await getCurrentlyPlaying();
+    }
 
     // user playing song
     if (currentPlaying.status === 200) {
-        const playback = await currentPlaying.json();
-        return Response.json(playback, {
+        const media = await currentPlaying.json();
+        RecentPlayback = media;
+
+        return Response.json(RecentPlayback, {
             headers: {
                 "Content-Type": "application/json",
-                "X-sushil-header": "Hello from server",
             },
         });
     }
 
+    // too many requests
+    if (currentPlaying.status == 429) {
+        return NextResponse.json(
+            {
+                error: "unavailable",
+                message: "Spotify Unavailable",
+            },
+            {
+                status: 429,
+            },
+        );
+    }
+
+    if (!RecentPlayback) {
+        return Response.json(
+            {
+                error: "offline",
+                message: "Spotify Unavailabe",
+            },
+            {
+                status: 503,
+            },
+        );
+    }
     // not playing any song
-    return Response.json({
-        error: "offline",
-    });
+    return Response.json(RecentPlayback);
 }
 
 // idk what the hell it do :)
