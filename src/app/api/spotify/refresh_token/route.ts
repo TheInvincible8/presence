@@ -33,3 +33,5 @@ export async function GET(req: NextRequest, res: NextResponse) {
         access_token,
     });
 }
+
+export const dynamic = "force-dynamic";
