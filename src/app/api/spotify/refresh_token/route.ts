@@ -25,12 +25,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
     );
 
-    const { access_token, refresh_token } = await response.json();
+    const { access_token } = await response.json();
+
     process.env.SPOTIFY_ACCESS_TOKEN = access_token;
-    process.env.SPOTIFY_REFRESH_TOKEN = refresh_token;
 
     return NextResponse.json({
         access_token,
-        refresh_token,
     });
 }
