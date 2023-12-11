@@ -9,14 +9,16 @@ export const metadata: Metadata = {
     description: "My Portfolio",
 };
 
-export default function RootLayout({
-    children,
-}: {
+export default function RootLayout(props: {
     children: React.ReactNode;
+    modal: React.ReactNode;
 }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body>
+                <div id="children">{props.children}</div>
+                <div id="model">{props.modal}</div>
+            </body>
         </html>
     );
 }

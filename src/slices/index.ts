@@ -4,5 +4,8 @@ import dynamic from "next/dynamic";
 
 export const components = {
     card: dynamic(() => import("./Cards")),
+    gallery: dynamic(() => import("./Gallery")),
+    hero: dynamic(() => import("./Hero")),
     navigation: dynamic(() => import("./Navigation")),
+    two_split: dynamic(() => import("./TwoSplit")),
 };

@@ -1,0 +1,96 @@
+{
+  "id": "two_split",
+  "type": "SharedSlice",
+  "name": "TwoSplit",
+  "description": "TwoSplit",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "primary_image": {
+          "type": "Image",
+          "config": {
+            "label": "primary_image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "heading",
+            "placeholder": ""
+          }
+        },
+        "secondary_heading": {
+          "type": "Text",
+          "config": {
+            "label": "secondary_heading",
+            "placeholder": ""
+          }
+        },
+        "paragraph": {
+          "type": "Text",
+          "config": {
+            "label": "paragraph",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    },
+    {
+      "id": "twoImage",
+      "name": "TwoImage",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "primary_image": {
+          "type": "Image",
+          "config": {
+            "label": "primary_image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "secondary_image": {
+          "type": "Image",
+          "config": {
+            "label": "secondary_image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "heading",
+            "placeholder": ""
+          }
+        },
+        "secondary_heading": {
+          "type": "Text",
+          "config": {
+            "label": "secondary_heading",
+            "placeholder": ""
+          }
+        },
+        "paragraph": {
+          "type": "Text",
+          "config": {
+            "label": "paragraph",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

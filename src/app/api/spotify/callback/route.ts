@@ -6,14 +6,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
     // spotify.comt?code=''
     const params = req.nextUrl.searchParams;
     const code = params.get("code") || null;
-    console.log(
-        code,
-        "-----\n",
-        "Basic " +
-            Buffer.from(
-                `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
-            ).toString("base64"),
-    );
 
     if (code) {
         const data = querystring.stringify({
@@ -22,7 +14,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
             grant_type: "authorization_code",
         });
 
-        console.log("encoded data ===> ", data);
         const response = await global.fetch(
             "https://accounts.spotify.com/api/token",
             {

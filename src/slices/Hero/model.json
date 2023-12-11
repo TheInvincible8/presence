@@ -1,0 +1,68 @@
+{
+  "id": "hero",
+  "type": "SharedSlice",
+  "name": "Hero",
+  "description": "Hero",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Full Background",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "hero_image": {
+          "type": "Image",
+          "config": {
+            "label": "hero_image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      },
+      "items": {}
+    },
+    {
+      "id": "heroWithHeader",
+      "name": "Hero with header",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "hero_image": {
+          "type": "Image",
+          "config": {
+            "label": "hero_image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "hero_link": {
+          "type": "Link",
+          "config": {
+            "label": "hero_link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "hero_header": {
+          "type": "Text",
+          "config": {
+            "label": "hero_header",
+            "placeholder": ""
+          }
+        },
+        "hero_subheader": {
+          "type": "Text",
+          "config": {
+            "label": "hero_subheader",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

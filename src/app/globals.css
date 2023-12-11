@@ -4,20 +4,21 @@
 
 @font-face {
     font-family: 'SF Pro';
-    src: url('/public/SF-Pro-Display-Light.woff') format('woff');
+    src: url('./fonts/SF-Pro-Display-Regular.woff') format('woff');
     font-weight: 400;
 }
 
 @font-face {
     font-family: 'SF Pro';
-    src: url('/public/SF-Pro-Text-Black.woff') format('woff');
+    src: url('./fonts/SF-Pro-Text-Black.woff') format('woff');
     font-weight: 900;
 }
 
 :root {
     --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 214, 219, 220;
+    --background-start-rgb: 255, 255, 255;
     --background-end-rgb: 255, 255, 255;
+    --padding-small-device: 1rem;
 }
 
 html {
@@ -32,63 +33,75 @@ html {
     }
 }
 
-@media (min-width: 640px) {
+@media (max-width: 639px) {
+    .container_grid {
+        padding: var(--padding-small-device);
+    }
+
+    .container_grid> :not(:first-child) {
+        height: calc(100vw - 2 * var(--padding-small-device));
+        max-width: 100vw;
+    }
+}
+
+@media screen and (min-width: 640px) {
     html {
         font-size: 10px
     }
 
     .container_grid {
         grid-template-rows: 4rem;
-        grid-template-columns: repeat(6, 9.625rem);
+        grid-template-columns: repeat(4, 9.625rem);
         grid-auto-rows: 9.625rem;
     }
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
     html {
         font-size: 10px;
     }
 
     .container_grid {
         grid-template-rows: 4rem;
-        grid-template-columns: repeat(8, 8.24691rem);
-        grid-auto-rows: 8.24691rem;
+        grid-template-columns: repeat(4, 11.75833rem);
+        grid-auto-rows: 11.75833rem;
     }
 }
 
-@media (min-width: 1024px) {
+@media screen and (min-width: 1024px) {
     html {
         font-size: 10px
     }
 
     .container_grid {
         grid-template-rows: 4rem;
-        grid-auto-rows: 11.3rem;
-        grid-template-columns: repeat(9, 11.3rem);
+        grid-auto-rows: 11.70625rem;
+        grid-template-columns: repeat(6, 11.70625rem);
     }
 }
 
-@media (min-width: 1280px) {
+@media screen and (min-width: 1280px) {
     html {
         font-size: 10px
     }
 
     .container_grid {
         grid-template-rows: 4rem;
-        grid-auto-rows: 10.6rem;
-        grid-template-columns: repeat(12, 10.6rem);
+        grid-auto-rows: 11.675rem;
+        grid-template-columns: repeat(8, 11.675rem);
     }
 }
 
-@media (min-width: 1536px) {
+@media screen and (min-width: 1536px) {
     html {
         font-size: 10px
     }
 
     .container_grid {
+        /* accounting grid gap 1.25rem*/
         grid-template-rows: 4rem;
-        grid-auto-rows: 12.8rem;
-        grid-template-columns: repeat(12, 12.8rem);
+        grid-auto-rows: 11.6541rem;
+        grid-template-columns: repeat(10, 11.6541rem);
     }
 }
 
@@ -102,4 +115,88 @@ body {
 
 nav :last-child {
     margin-right: 0;
+}
+
+.card {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1;
+    /* filter: drop-shadow(16px 16px 10px black); */
+}
+
+.card:hover .card__action-button {
+    animation: pulse 1s ease infinite;
+}
+
+.model_container {
+    background-color: rgb(var(--background-start-rgb))
+}
+
+.close_button {
+    background-color: rgb(var(--background-start-rgb))
+}
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.9);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0.9);
+    }
+}
+
+.card:hover {
+    transform: scale(0.95);
+}
+
+img {
+    object-fit: contain;
+}
+
+@keyframes scale-easeOutBounce {
+    0% {
+        transform: scale(1);
+    }
+
+    12% {
+        transform: scale(0.89);
+    }
+
+    24% {
+        transform: scale(0.56);
+    }
+
+    36% {
+        transform: scale(0.02);
+    }
+
+    54% {
+        transform: scale(0.25);
+    }
+
+    74% {
+        transform: scale(0.02);
+    }
+
+    82% {
+        transform: scale(0.06);
+    }
+
+    92% {
+        transform: scale(0.01);
+    }
+
+    96% {
+        transform: scale(0.02);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+
 }

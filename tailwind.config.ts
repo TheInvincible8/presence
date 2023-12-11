@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-
+import defaultTheme from "tailwindcss/defaultTheme";
 const config: Config = {
     content: [
         "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -31,6 +31,10 @@ const config: Config = {
         },
         container: {
             center: true,
+        },
+        screens: {
+            xm: { max: "639px" },
+            ...defaultTheme.screens,
         },
     },
     plugins: [],

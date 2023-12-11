@@ -220,6 +220,71 @@ interface HomeDocumentData {
 export type HomeDocument<Lang extends string = string> =
     prismic.PrismicDocumentWithoutUID<Simplify<HomeDocumentData>, "home", Lang>;
 
+type ProjectDocumentDataSlicesSlice = GallerySlice | TwoSplitSlice | HeroSlice;
+
+/**
+ * Content for Project documents
+ */
+interface ProjectDocumentData {
+    /**
+     * Slice Zone field in *Project*
+     *
+     * - **Field Type**: Slice Zone
+     * - **Placeholder**: *None*
+     * - **API ID Path**: project.slices[]
+     * - **Tab**: Main
+     * - **Documentation**: https://prismic.io/docs/field#slices
+     */
+    slices: prismic.SliceZone<ProjectDocumentDataSlicesSlice> /**
+     * Meta Description field in *Project*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: A brief summary of the page
+     * - **API ID Path**: project.meta_description
+     * - **Tab**: SEO & Metadata
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */;
+    meta_description: prismic.KeyTextField;
+
+    /**
+     * Meta Image field in *Project*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: project.meta_image
+     * - **Tab**: SEO & Metadata
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    meta_image: prismic.ImageField<never>;
+
+    /**
+     * Meta Title field in *Project*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: A title of the page used for social media and search engines
+     * - **API ID Path**: project.meta_title
+     * - **Tab**: SEO & Metadata
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    meta_title: prismic.KeyTextField;
+}
+
+/**
+ * Project document from Prismic
+ *
+ * - **API ID**: `project`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ProjectDocument<Lang extends string = string> =
+    prismic.PrismicDocumentWithUID<
+        Simplify<ProjectDocumentData>,
+        "project",
+        Lang
+    >;
+
 type ProjectsDocumentDataSlicesSlice = CardSlice;
 
 /**
@@ -290,6 +355,7 @@ export type AllDocumentTypes =
     | FooterDocument
     | HeaderDocument
     | HomeDocument
+    | ProjectDocument
     | ProjectsDocument;
 
 /**
@@ -370,6 +436,26 @@ export interface CardSliceDefaultPrimary {
      * - **Documentation**: https://prismic.io/docs/field#select
      */
     card_width: prismic.SelectField<"1" | "2", "filled">;
+
+    /**
+     * image_dark field in *Cards → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.image_dark
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    image_dark: prismic.ImageField<never>;
+
+    /**
+     * image_light field in *Cards → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.image_light
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    image_light: prismic.ImageField<never>;
 }
 
 /**
@@ -458,16 +544,6 @@ export interface CardSliceLinkCardPrimary {
     title: prismic.KeyTextField;
 
     /**
-     * background_image field in *Cards → Primary*
-     *
-     * - **Field Type**: Image
-     * - **Placeholder**: *None*
-     * - **API ID Path**: card.primary.background_image
-     * - **Documentation**: https://prismic.io/docs/field#image
-     */
-    background_image: prismic.ImageField<never>;
-
-    /**
      * background_color field in *Cards → Primary*
      *
      * - **Field Type**: Color
@@ -492,11 +568,14 @@ export interface CardSliceLinkCardPrimary {
      *
      * - **Field Type**: Select
      * - **Placeholder**: *None*
-     * - **Default Value**: 2
+     * - **Default Value**: top-right
      * - **API ID Path**: card.primary.button_pos
      * - **Documentation**: https://prismic.io/docs/field#select
      */
-    button_pos: prismic.SelectField<"2" | "1" | "3" | "4", "filled">;
+    button_pos: prismic.SelectField<
+        "top-right" | "top-left" | "bot-left" | "bot-right",
+        "filled"
+    >;
 
     /**
      * card_width field in *Cards → Primary*
@@ -508,21 +587,26 @@ export interface CardSliceLinkCardPrimary {
      * - **Documentation**: https://prismic.io/docs/field#select
      */
     card_width: prismic.SelectField<"1" | "2", "filled">;
-}
 
-/**
- * Primary content in *Cards → Items*
- */
-export interface CardSliceLinkCardItem {
     /**
-     * image field in *Cards → Items*
+     * bg_image_dark field in *Cards → Primary*
      *
      * - **Field Type**: Image
      * - **Placeholder**: *None*
-     * - **API ID Path**: card.items[].image
+     * - **API ID Path**: card.primary.bg_image_dark
      * - **Documentation**: https://prismic.io/docs/field#image
      */
-    image: prismic.ImageField<never>;
+    bg_image_dark: prismic.ImageField<never>;
+
+    /**
+     * bg_image_light field in *Cards → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.bg_image_light
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    bg_image_light: prismic.ImageField<never>;
 }
 
 /**
@@ -535,7 +619,7 @@ export interface CardSliceLinkCardItem {
 export type CardSliceLinkCard = prismic.SharedSliceVariation<
     "linkCard",
     Simplify<CardSliceLinkCardPrimary>,
-    Simplify<CardSliceLinkCardItem>
+    never
 >;
 
 /**
@@ -647,13 +731,188 @@ export type CardSliceCardWithVideo = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *Cards → Primary*
+ */
+export interface CardSliceTitleCardPrimary {
+    /**
+     * title field in *Cards → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.title
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    title: prismic.KeyTextField;
+
+    /**
+     * background_color field in *Cards → Primary*
+     *
+     * - **Field Type**: Color
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.background_color
+     * - **Documentation**: https://prismic.io/docs/field#color
+     */
+    background_color: prismic.ColorField;
+
+    /**
+     * action_link field in *Cards → Primary*
+     *
+     * - **Field Type**: Link
+     * - **Placeholder**: #
+     * - **API ID Path**: card.primary.action_link
+     * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+     */
+    action_link: prismic.LinkField;
+
+    /**
+     * button_pos field in *Cards → Primary*
+     *
+     * - **Field Type**: Select
+     * - **Placeholder**: *None*
+     * - **Default Value**: 2
+     * - **API ID Path**: card.primary.button_pos
+     * - **Documentation**: https://prismic.io/docs/field#select
+     */
+    button_pos: prismic.SelectField<"2" | "1" | "3" | "4", "filled">;
+
+    /**
+     * card_width field in *Cards → Primary*
+     *
+     * - **Field Type**: Select
+     * - **Placeholder**: *None*
+     * - **Default Value**: 1
+     * - **API ID Path**: card.primary.card_width
+     * - **Documentation**: https://prismic.io/docs/field#select
+     */
+    card_width: prismic.SelectField<"1" | "2", "filled">;
+
+    /**
+     * bg_image_dark field in *Cards → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.bg_image_dark
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    bg_image_dark: prismic.ImageField<never>;
+
+    /**
+     * bg_image_light field in *Cards → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.bg_image_light
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    bg_image_light: prismic.ImageField<never>;
+}
+
+/**
+ * titleCard variation for Cards Slice
+ *
+ * - **API ID**: `titleCard`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CardSliceTitleCard = prismic.SharedSliceVariation<
+    "titleCard",
+    Simplify<CardSliceTitleCardPrimary>,
+    never
+>;
+
+/**
+ * Primary content in *Cards → Primary*
+ */
+export interface CardSliceFullBackgroundCardPrimary {
+    /**
+     * title field in *Cards → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.title
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    title: prismic.KeyTextField;
+
+    /**
+     * action_link field in *Cards → Primary*
+     *
+     * - **Field Type**: Link
+     * - **Placeholder**: #
+     * - **API ID Path**: card.primary.action_link
+     * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+     */
+    action_link: prismic.LinkField;
+
+    /**
+     * card_width field in *Cards → Primary*
+     *
+     * - **Field Type**: Select
+     * - **Placeholder**: *None*
+     * - **Default Value**: 1
+     * - **API ID Path**: card.primary.card_width
+     * - **Documentation**: https://prismic.io/docs/field#select
+     */
+    card_width: prismic.SelectField<"1" | "2", "filled">;
+
+    /**
+     * bg_image_dark field in *Cards → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.bg_image_dark
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    bg_image_dark: prismic.ImageField<never>;
+
+    /**
+     * bg_image_light field in *Cards → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: card.primary.bg_image_light
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    bg_image_light: prismic.ImageField<never>;
+
+    /**
+     * button_pos field in *Cards → Primary*
+     *
+     * - **Field Type**: Select
+     * - **Placeholder**: *None*
+     * - **Default Value**: bot-right
+     * - **API ID Path**: card.primary.button_pos
+     * - **Documentation**: https://prismic.io/docs/field#select
+     */
+    button_pos: prismic.SelectField<
+        "bot-right" | "bot-left" | "top-left" | "top-right",
+        "filled"
+    >;
+}
+
+/**
+ * Full Background Card variation for Cards Slice
+ *
+ * - **API ID**: `fullBackgroundCard`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CardSliceFullBackgroundCard = prismic.SharedSliceVariation<
+    "fullBackgroundCard",
+    Simplify<CardSliceFullBackgroundCardPrimary>,
+    never
+>;
+
+/**
  * Slice variation for *Cards*
  */
 type CardSliceVariation =
     | CardSliceDefault
     | CardSliceSlide
     | CardSliceLinkCard
-    | CardSliceCardWithVideo;
+    | CardSliceCardWithVideo
+    | CardSliceTitleCard
+    | CardSliceFullBackgroundCard;
 
 /**
  * Cards Shared Slice
@@ -663,6 +922,151 @@ type CardSliceVariation =
  * - **Documentation**: https://prismic.io/docs/slice
  */
 export type CardSlice = prismic.SharedSlice<"card", CardSliceVariation>;
+
+/**
+ * Primary content in *Gallery → Items*
+ */
+export interface GallerySliceDefaultItem {
+    /**
+     * gallery_image field in *Gallery → Items*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: gallery.items[].gallery_image
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    gallery_image: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for Gallery Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type GallerySliceDefault = prismic.SharedSliceVariation<
+    "default",
+    Record<string, never>,
+    Simplify<GallerySliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *Gallery*
+ */
+type GallerySliceVariation = GallerySliceDefault;
+
+/**
+ * Gallery Shared Slice
+ *
+ * - **API ID**: `gallery`
+ * - **Description**: Gallery
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type GallerySlice = prismic.SharedSlice<
+    "gallery",
+    GallerySliceVariation
+>;
+
+/**
+ * Primary content in *Hero → Primary*
+ */
+export interface HeroSliceDefaultPrimary {
+    /**
+     * hero_image field in *Hero → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: hero.primary.hero_image
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    hero_image: prismic.ImageField<never>;
+}
+
+/**
+ * Full Background variation for Hero Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSliceDefault = prismic.SharedSliceVariation<
+    "default",
+    Simplify<HeroSliceDefaultPrimary>,
+    never
+>;
+
+/**
+ * Primary content in *Hero → Primary*
+ */
+export interface HeroSliceHeroWithHeaderPrimary {
+    /**
+     * hero_image field in *Hero → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: hero.primary.hero_image
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    hero_image: prismic.ImageField<never>;
+
+    /**
+     * hero_link field in *Hero → Primary*
+     *
+     * - **Field Type**: Link
+     * - **Placeholder**: *None*
+     * - **API ID Path**: hero.primary.hero_link
+     * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+     */
+    hero_link: prismic.LinkField;
+
+    /**
+     * hero_header field in *Hero → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: hero.primary.hero_header
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    hero_header: prismic.KeyTextField;
+
+    /**
+     * hero_subheader field in *Hero → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: hero.primary.hero_subheader
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    hero_subheader: prismic.KeyTextField;
+}
+
+/**
+ * Hero with header variation for Hero Slice
+ *
+ * - **API ID**: `heroWithHeader`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSliceHeroWithHeader = prismic.SharedSliceVariation<
+    "heroWithHeader",
+    Simplify<HeroSliceHeroWithHeaderPrimary>,
+    never
+>;
+
+/**
+ * Slice variation for *Hero*
+ */
+type HeroSliceVariation = HeroSliceDefault | HeroSliceHeroWithHeader;
+
+/**
+ * Hero Shared Slice
+ *
+ * - **API ID**: `hero`
+ * - **Description**: Hero
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
 /**
  * Primary content in *Navigation → Items*
@@ -719,6 +1123,149 @@ export type NavigationSlice = prismic.SharedSlice<
     NavigationSliceVariation
 >;
 
+/**
+ * Primary content in *TwoSplit → Primary*
+ */
+export interface TwoSplitSliceDefaultPrimary {
+    /**
+     * primary_image field in *TwoSplit → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: two_split.primary.primary_image
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    primary_image: prismic.ImageField<never>;
+
+    /**
+     * heading field in *TwoSplit → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: two_split.primary.heading
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    heading: prismic.KeyTextField;
+
+    /**
+     * secondary_heading field in *TwoSplit → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: two_split.primary.secondary_heading
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    secondary_heading: prismic.KeyTextField;
+
+    /**
+     * paragraph field in *TwoSplit → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: two_split.primary.paragraph
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    paragraph: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for TwoSplit Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TwoSplitSliceDefault = prismic.SharedSliceVariation<
+    "default",
+    Simplify<TwoSplitSliceDefaultPrimary>,
+    never
+>;
+
+/**
+ * Primary content in *TwoSplit → Primary*
+ */
+export interface TwoSplitSliceTwoImagePrimary {
+    /**
+     * primary_image field in *TwoSplit → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: two_split.primary.primary_image
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    primary_image: prismic.ImageField<never>;
+
+    /**
+     * secondary_image field in *TwoSplit → Primary*
+     *
+     * - **Field Type**: Image
+     * - **Placeholder**: *None*
+     * - **API ID Path**: two_split.primary.secondary_image
+     * - **Documentation**: https://prismic.io/docs/field#image
+     */
+    secondary_image: prismic.ImageField<never>;
+
+    /**
+     * heading field in *TwoSplit → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: two_split.primary.heading
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    heading: prismic.KeyTextField;
+
+    /**
+     * secondary_heading field in *TwoSplit → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: two_split.primary.secondary_heading
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    secondary_heading: prismic.KeyTextField;
+
+    /**
+     * paragraph field in *TwoSplit → Primary*
+     *
+     * - **Field Type**: Text
+     * - **Placeholder**: *None*
+     * - **API ID Path**: two_split.primary.paragraph
+     * - **Documentation**: https://prismic.io/docs/field#key-text
+     */
+    paragraph: prismic.KeyTextField;
+}
+
+/**
+ * TwoImage variation for TwoSplit Slice
+ *
+ * - **API ID**: `twoImage`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TwoSplitSliceTwoImage = prismic.SharedSliceVariation<
+    "twoImage",
+    Simplify<TwoSplitSliceTwoImagePrimary>,
+    never
+>;
+
+/**
+ * Slice variation for *TwoSplit*
+ */
+type TwoSplitSliceVariation = TwoSplitSliceDefault | TwoSplitSliceTwoImage;
+
+/**
+ * TwoSplit Shared Slice
+ *
+ * - **API ID**: `two_split`
+ * - **Description**: TwoSplit
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TwoSplitSlice = prismic.SharedSlice<
+    "two_split",
+    TwoSplitSliceVariation
+>;
+
 declare module "@prismicio/client" {
     interface CreateClient {
         (
@@ -741,6 +1288,9 @@ declare module "@prismicio/client" {
             HomeDocument,
             HomeDocumentData,
             HomeDocumentDataSlicesSlice,
+            ProjectDocument,
+            ProjectDocumentData,
+            ProjectDocumentDataSlicesSlice,
             ProjectsDocument,
             ProjectsDocumentData,
             ProjectsDocumentDataSlicesSlice,
@@ -751,18 +1301,37 @@ declare module "@prismicio/client" {
             CardSliceSlidePrimary,
             CardSliceSlideItem,
             CardSliceLinkCardPrimary,
-            CardSliceLinkCardItem,
             CardSliceCardWithVideoPrimary,
             CardSliceCardWithVideoItem,
+            CardSliceTitleCardPrimary,
+            CardSliceFullBackgroundCardPrimary,
             CardSliceVariation,
             CardSliceDefault,
             CardSliceSlide,
             CardSliceLinkCard,
             CardSliceCardWithVideo,
+            CardSliceTitleCard,
+            CardSliceFullBackgroundCard,
+            GallerySlice,
+            GallerySliceDefaultItem,
+            GallerySliceVariation,
+            GallerySliceDefault,
+            HeroSlice,
+            HeroSliceDefaultPrimary,
+            HeroSliceHeroWithHeaderPrimary,
+            HeroSliceVariation,
+            HeroSliceDefault,
+            HeroSliceHeroWithHeader,
             NavigationSlice,
             NavigationSliceDefaultItem,
             NavigationSliceVariation,
             NavigationSliceDefault,
+            TwoSplitSlice,
+            TwoSplitSliceDefaultPrimary,
+            TwoSplitSliceTwoImagePrimary,
+            TwoSplitSliceVariation,
+            TwoSplitSliceDefault,
+            TwoSplitSliceTwoImage,
         };
     }
 }
