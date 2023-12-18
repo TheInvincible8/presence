@@ -9,7 +9,6 @@ import Header from "@/components/header";
 import Listing from "@/components/listing";
 
 export default async function Home() {
-    console.log([...headers().entries()]);
     const { about, projects } = await getData();
     return <Listing about={about} projects={projects} />;
 }
@@ -19,8 +18,6 @@ async function getData() {
 
     const about = await client.getSingle("about");
     const projects = await client.getSingle("projects");
-    console.log(projects);
-    const origin = headers().get("referer");
     return {
         about,
         projects,
