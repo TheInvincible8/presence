@@ -155,8 +155,10 @@ function FullBGCard({
                     pos={ButtonPos[slice.primary.button_pos]}
                     href={
                         "/" +
+                        //@ts-ignore
                         slice.primary.action_link?.type +
                         "/" +
+                        //@ts-ignore
                         slice.primary.action_link?.uid
                     }
                 >
