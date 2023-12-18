@@ -59,6 +59,7 @@ const HeroWithHeader = ({
                 </p>
                 <Link
                     className="text-lg mt-2 px-2 border rounded-full border-black "
+                    //@ts-ignore
                     href={slice.primary.hero_link?.url || "#"}
                 >
                     View Live
