@@ -14,8 +14,13 @@ import {
     CardSliceLinkCardPrimary,
     CardSliceTitleCard,
 } from "../../../prismicio-types";
-import { faPlay, faPlus } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
+import {
+    faCirclePlay,
+    faPlay,
+    faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { Button, ButtonPos } from "@/components/button";
+import Spotify from "@/components/spotify";
 /**
  * Props for `Card`.
  */
@@ -25,12 +30,6 @@ export type CardProps = Content.CardSlice;
  * Component for "Card" Slices.
  */
 
-enum ButtonPos {
-    "top-left" = "top-3 left-3",
-    "top-right" = "top-3 right-3",
-    "bot-left" = "bottom-3 left-3",
-    "bot-right" = "bottom-3 right-3",
-}
 const DefaultCard = ({ slice }: { slice: CardSliceDefault }): JSX.Element => {
     /* eslint-disable */
     return (
@@ -38,7 +37,7 @@ const DefaultCard = ({ slice }: { slice: CardSliceDefault }): JSX.Element => {
             aria-label="introduction"
             className="card sm:col-span-4 md:col-span-4 sm:row-span-2 rounded-2xl p-5 border-2 relative"
         >
-            <div className="img_wrapper w-40 h-40">
+            <div className="img_wrapper xm:w-32 xm:h-32 w-40 h-40 mb-2.5">
                 <img
                     className="hidden dark:block"
                     src={slice.primary.image_dark.url || ""}
@@ -50,13 +49,18 @@ const DefaultCard = ({ slice }: { slice: CardSliceDefault }): JSX.Element => {
                     alt="image"
                 />
             </div>
-            <h3 className="text-3xl mb-2.5 font-semibold">
+            <h3 className="text-3xl lg:text-4xl mb-2.5 font-semibold">
                 {slice.primary.title}
             </h3>
-            <p className="text-lg">{slice.primary.subtitle}</p>
-            <button className="absolute top-3 right-3 w-10 h-10 flex justify-center items-center p-3 rounded-full border-2">
-                <FontAwesomeIcon icon={faPlay} />
-            </button>
+            <p className="sm:text-lg lg:text-2xl md:pr-20">
+                {slice.primary.subtitle}
+            </p>
+            <Button pos={ButtonPos["top-right"]} href="#" loading={false}>
+                <FontAwesomeIcon
+                    icon={faPlay}
+                    className="translate-x-[10%] h-full invert"
+                />
+            </Button>
         </div>
     );
 };
@@ -76,19 +80,17 @@ const CardWithLink = ({ slice }: { slice: CardSliceLinkCard }): JSX.Element => {
                     alt={slice.primary.bg_image_light.alt || "image"}
                 />
             </div>
-            <a
+            <Button
+                pos={ButtonPos["top-right"]}
                 href={
                     slice.primary.action_link &&
                     "url" in slice.primary.action_link
                         ? slice.primary.action_link.url
                         : "#"
                 }
-                className={`card__action-button w-10 h-10 absolute p-3 rounded-full border-2 flex justify-center items-center ${
-                    ButtonPos[slice.primary.button_pos]
-                }`}
             >
-                <FontAwesomeIcon icon={faPlus} />
-            </a>
+                <FontAwesomeIcon icon={faPlus} className="h-full invert" />
+            </Button>
         </div>
     );
 };
@@ -99,7 +101,7 @@ const TitleCard = ({ slice }: { slice: CardSliceTitleCard }): JSX.Element => {
             className="card sm:col-span-2  sm:row-span-2 rounded-2xl border-2 relative"
             title={slice.primary.title || "Clickable Card"}
         >
-            <h3 className="text-center text-3xl font-bold mt-16">
+            <h3 className="text-center text-3xl lg:text-4xl font-bold mt-20 px-3 break-words">
                 {slice.primary.title}
             </h3>
             <div className="absolute left-2/4 bottom-0 -translate-x-2/4">
@@ -114,17 +116,17 @@ const TitleCard = ({ slice }: { slice: CardSliceTitleCard }): JSX.Element => {
                     alt={slice.primary.bg_image_light.alt || "image"}
                 />
             </div>
-            <a
+            <Button
+                pos={ButtonPos["top-right"]}
                 href={
                     slice.primary.action_link &&
                     "url" in slice.primary.action_link
                         ? slice.primary.action_link.url
                         : "#"
                 }
-                className="card__action-button w-10 h-10 absolute p-3 rounded-full border-2 flex justify-center items-center bottom-3 right-3"
             >
-                <FontAwesomeIcon icon={faPlus} />
-            </a>
+                <FontAwesomeIcon icon={faPlus} className="h-full invert" />
+            </Button>
         </div>
     );
 };
@@ -149,37 +151,37 @@ function FullBGCard({
                 />
             </div>
             {slice.primary.action_link.link_type == LinkType["Document"] ? (
-                <Link
+                <Button
+                    pos={ButtonPos[slice.primary.button_pos]}
                     href={
                         "/" +
                         slice.primary.action_link?.type +
                         "/" +
                         slice.primary.action_link?.uid
                     }
-                    className={`card__action-button w-10 h-10 absolute p-3 rounded-full border-2 flex justify-center items-center ${
-                        ButtonPos[slice.primary.button_pos]
-                    }`}
                 >
-                    <FontAwesomeIcon icon={faPlus} />
-                </Link>
+                    <FontAwesomeIcon icon={faPlus} className="h-full invert" />
+                </Button>
             ) : (
-                <a
+                <Button
+                    pos={ButtonPos[slice.primary.button_pos]}
                     href={
                         slice.primary.action_link &&
                         "url" in slice.primary.action_link
                             ? slice.primary.action_link.url
                             : "#"
                     }
-                    className={`card__action-button w-10 h-10 absolute p-3 rounded-full border-2 flex justify-center items-center ${
-                        ButtonPos[slice.primary.button_pos]
-                    }`}
                 >
-                    <FontAwesomeIcon icon={faPlus} />
-                </a>
+                    <FontAwesomeIcon icon={faPlus} className="h-full invert" />
+                </Button>
             )}
         </div>
     );
 }
+
+const SpotifyCard = () => {
+    return <Spotify />;
+};
 const Card = ({ slice }: { slice: CardProps }): JSX.Element => {
     if (slice.variation == "linkCard") {
         return <CardWithLink slice={slice} />;
@@ -201,6 +203,9 @@ const Card = ({ slice }: { slice: CardProps }): JSX.Element => {
         return <FullBGCard slice={slice} />;
     }
 
+    if (slice.variation == "spotify") {
+        return <SpotifyCard />;
+    }
     return <DefaultCard slice={slice} />;
 };
 

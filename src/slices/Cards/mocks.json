@@ -526,5 +526,22 @@
 				"value": []
 			}
 		]
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "spotify",
+		"primary": {
+			"button_pos": {
+				"__TYPE__": "FieldContent",
+				"value": "top-right",
+				"type": "Select"
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
 	}
 ]

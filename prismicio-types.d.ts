@@ -904,6 +904,38 @@ export type CardSliceFullBackgroundCard = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *Cards → Primary*
+ */
+export interface CardSliceSpotifyPrimary {
+    /**
+     * button_pos field in *Cards → Primary*
+     *
+     * - **Field Type**: Select
+     * - **Placeholder**: *None*
+     * - **Default Value**: top-right
+     * - **API ID Path**: card.primary.button_pos
+     * - **Documentation**: https://prismic.io/docs/field#select
+     */
+    button_pos: prismic.SelectField<
+        "top-right" | "top-left" | "bot-left" | "bot-right",
+        "filled"
+    >;
+}
+
+/**
+ * spotify variation for Cards Slice
+ *
+ * - **API ID**: `spotify`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CardSliceSpotify = prismic.SharedSliceVariation<
+    "spotify",
+    Simplify<CardSliceSpotifyPrimary>,
+    never
+>;
+
+/**
  * Slice variation for *Cards*
  */
 type CardSliceVariation =
@@ -912,7 +944,8 @@ type CardSliceVariation =
     | CardSliceLinkCard
     | CardSliceCardWithVideo
     | CardSliceTitleCard
-    | CardSliceFullBackgroundCard;
+    | CardSliceFullBackgroundCard
+    | CardSliceSpotify;
 
 /**
  * Cards Shared Slice
@@ -1305,6 +1338,7 @@ declare module "@prismicio/client" {
             CardSliceCardWithVideoItem,
             CardSliceTitleCardPrimary,
             CardSliceFullBackgroundCardPrimary,
+            CardSliceSpotifyPrimary,
             CardSliceVariation,
             CardSliceDefault,
             CardSliceSlide,
@@ -1312,6 +1346,7 @@ declare module "@prismicio/client" {
             CardSliceCardWithVideo,
             CardSliceTitleCard,
             CardSliceFullBackgroundCard,
+            CardSliceSpotify,
             GallerySlice,
             GallerySliceDefaultItem,
             GallerySliceVariation,

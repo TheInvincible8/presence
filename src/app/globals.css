@@ -49,8 +49,12 @@ html {
         font-size: 10px
     }
 
+    .header {
+        height: 6rem;
+    }
+
     .container_grid {
-        grid-template-rows: 4rem;
+        grid-template-rows: min-content;
         grid-template-columns: repeat(4, 9.625rem);
         grid-auto-rows: 9.625rem;
     }
@@ -61,8 +65,11 @@ html {
         font-size: 10px;
     }
 
+    .header {
+        height: 6rem;
+    }
+
     .container_grid {
-        grid-template-rows: 4rem;
         grid-template-columns: repeat(4, 11.75833rem);
         grid-auto-rows: 11.75833rem;
     }
@@ -73,8 +80,11 @@ html {
         font-size: 10px
     }
 
+    .header {
+        height: 6rem;
+    }
+
     .container_grid {
-        grid-template-rows: 4rem;
         grid-auto-rows: 11.70625rem;
         grid-template-columns: repeat(6, 11.70625rem);
     }
@@ -85,8 +95,11 @@ html {
         font-size: 10px
     }
 
+    .header {
+        height: 6rem;
+    }
+
     .container_grid {
-        grid-template-rows: 4rem;
         grid-auto-rows: 11.675rem;
         grid-template-columns: repeat(8, 11.675rem);
     }
@@ -97,9 +110,12 @@ html {
         font-size: 10px
     }
 
+    .header {
+        height: 8rem;
+    }
+
     .container_grid {
         /* accounting grid gap 1.25rem*/
-        grid-template-rows: 4rem;
         grid-auto-rows: 11.6541rem;
         grid-template-columns: repeat(10, 11.6541rem);
     }
@@ -117,10 +133,16 @@ nav :last-child {
     margin-right: 0;
 }
 
-.card {
+.card,
+.navItem {
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 1;
+    user-select: none;
     /* filter: drop-shadow(16px 16px 10px black); */
+}
+
+.spotify {
+    user-select: unset;
 }
 
 .card:hover .card__action-button {
@@ -135,6 +157,53 @@ nav :last-child {
     background-color: rgb(var(--background-start-rgb))
 }
 
+.loading-animation {
+    position: relative;
+    overflow: hidden;
+    background-color: #d3d3d3;
+}
+
+.card__action-button {
+    position: absolute;
+}
+
+.loading-animation::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0,
+            rgba(255, 255, 255, 0.4) 20%,
+            rgba(255, 255, 255, 0.8) 60%,
+            rgba(255, 255, 255, 0));
+    animation: shimmer 3s infinite;
+    content: '';
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+
+@keyframes loading {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    50% {
+        background-position: 50% 0%;
+
+    }
+
+    100% {
+        background-position: 100% 0%;
+    }
+}
 
 @keyframes pulse {
     0% {
@@ -150,7 +219,8 @@ nav :last-child {
     }
 }
 
-.card:hover {
+.card:hover,
+.navItem:hover {
     transform: scale(0.95);
 }
 

@@ -36,7 +36,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         // retry one more time
         currentPlaying = await getCurrentlyPlaying();
     }
-
+    debugger;
     // user playing song
     if (currentPlaying.status === 200) {
         const media = await currentPlaying.json();
