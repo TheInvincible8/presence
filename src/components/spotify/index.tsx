@@ -71,11 +71,9 @@ export default function Spotify({ slice }: { slice?: CardSliceSpotify }) {
 
                     <div className="loading-animation flex-grow h-8 rounded-lg"></div>
                 </div>
-                <Button
-                    href={"#"}
-                    pos={ButtonPos["top-right"]}
-                    loading
-                ></Button>
+                <Button href={"#"} pos={ButtonPos["top-right"]} loading>
+                    <div></div>
+                </Button>
             </div>
         );
     }
