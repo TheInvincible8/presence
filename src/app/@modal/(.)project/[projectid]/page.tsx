@@ -25,5 +25,3 @@ export default async function ProjectModal({
         </Modal>
     );
 }
-
-export const dynamic = "force-dynamic";

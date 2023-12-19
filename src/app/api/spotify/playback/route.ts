@@ -77,9 +77,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
     return Response.json(RecentPlayback);
 }
 
-// idk what the hell it do :)
-export const revalidate = true;
 /**
  * not to cache this request (read more)[https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config]
  */
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
