@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     if (code) {
         const data = querystring.stringify({
             code,
-            redirect_uri: "http://localhost:3000/api/spotify/callback",
+            redirect_uri: `${req.nextUrl.origin}/api/spotify/callback`,
             grant_type: "authorization_code",
         });
 
