@@ -8,7 +8,7 @@ export default async function Header(): Promise<JSX.Element> {
                 href="/"
                 className="basis-3/5 font-black xm:text-center xm:text-4xl lg:text-6xl"
             >
-                Sushil Kumar
+                Pankaj Dadwal
             </Link>
             <Navigation />
         </header>
