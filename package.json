@@ -3,12 +3,12 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev",
+        "dev": "NODE_OPTIONS=\"--inspect\" next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
         "slicemachine": "start-slicemachine",
-        "debug": "NODE_OPTIONS='--inspect' next dev"
+        "debug": "next dev"
     },
     "prettier": {
         "tabWidth": 4
@@ -20,6 +20,7 @@
         "@prismicio/client": "7.3.1",
         "@prismicio/next": "1.5.0",
         "@prismicio/react": "2.7.3",
+        "@vercel/kv": "1.0.1",
         "next": "14.0.3",
         "react": "^18",
         "react-dom": "^18"
