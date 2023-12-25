@@ -1,6 +1,7 @@
 import { saveToFiles } from "@/utils/saveToFile";
 import { NextResponse, NextRequest } from "next/server";
 import querystring from "node:querystring";
+import Storage from "@/utils/storage";
 
 export async function GET(req: NextRequest, res: NextResponse) {
     // spotify.comt?code=''
@@ -31,8 +32,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
         );
 
         const { access_token, refresh_token } = await response.json();
-        process.env.SPOTIFY_ACCESS_TOKEN = access_token;
-        process.env.SPOTIFY_REFRESH_TOKEN = refresh_token;
+
+        if (process.env.VERCEL) {
+            await Storage.setAccessToken(access_token);
+            await Storage.setRefreshToken(refresh_token);
+        } else {
+            process.env.SPOTIFY_ACCESS_TOKEN = access_token;
+            process.env.SPOTIFY_REFRESH_TOKEN = refresh_token;
+        }
 
         await saveToFiles();
         return NextResponse.redirect(req.nextUrl.origin);
