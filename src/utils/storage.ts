@@ -18,15 +18,21 @@ class StorageService {
     }
 
     async setAccessToken(token: string) {
-        await kv.set(KEYS.SPOTIFY_ACCESS_TOKEN, token);
-        this.spotify_access_token = token;
+        try {
+            await kv.set(KEYS.SPOTIFY_ACCESS_TOKEN, token);
+            this.spotify_access_token = token;
+        } catch (e) {
+            throw e;
+        }
     }
 
     async getAccessToken(): Promise<string | null> {
+        if (this.spotify_access_token) return this.spotify_access_token;
         return await kv.get(KEYS.SPOTIFY_ACCESS_TOKEN);
     }
 
     async getRefreshToken(): Promise<string | null> {
+        if (this.spotify_refresh_token) return this.spotify_refresh_token;
         return await kv.get(KEYS.SPOTIFY_REFRESH_TOKEN);
     }
 
@@ -36,6 +42,7 @@ class StorageService {
     }
 
     async getCurrentPlayback(): Promise<string | null> {
+        if (this.recent_playback) return this.recent_playback;
         return await kv.get(KEYS.RECENT_PLAYBACK);
     }
 
