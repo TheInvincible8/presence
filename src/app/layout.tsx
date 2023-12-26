@@ -1,14 +1,10 @@
 import Footer from "@/components/footer";
 import "./globals.css";
 import type { Metadata } from "next";
-import Header from "@/components/header";
-// import { Inter } from 'next/font/google'
-
-// const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     title: "Sushil Kumar",
-    description: "My Portfolio",
+    description: "My Portfolio website",
 };
 
 export default function RootLayout(props: {
