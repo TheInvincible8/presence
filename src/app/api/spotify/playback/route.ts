@@ -1,21 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Episode, Playback, Track } from "@/types";
-//Keep recent playback in memory ( just in case );
-let RecentPlayback: Playback<Track> | Playback<Episode>;
+import Storage from "@/utils/storage";
 
-function getCurrentlyPlaying() {
+function getCurrentlyPlaying(token: string) {
     return global.fetch(
         "https://api.spotify.com/v1/me/player/currently-playing",
         {
             headers: {
-                Authorization: "Bearer " + process.env.SPOTIFY_ACCESS_TOKEN,
+                Authorization: "Bearer " + token,
             },
         },
     );
 }
 
+let RecentPlayback: string | null;
+
 export async function GET(req: NextRequest, res: NextResponse) {
-    if (process.env.SPOTIFY_ACCESS_TOKEN == undefined) {
+    RecentPlayback = await Storage.getCurrentPlayback();
+    let SpotifyAccessToken: string | null;
+    if (process.env.VERCEL) {
+        SpotifyAccessToken = await Storage.getAccessToken();
+    } else {
+        SpotifyAccessToken = process.env.SPOTIFY_ACCESS_TOKEN || null;
+    }
+
+    if (!SpotifyAccessToken) {
         return NextResponse.json(
             {
                 error: "token_unavailable",
@@ -28,19 +37,21 @@ export async function GET(req: NextRequest, res: NextResponse) {
         );
     }
 
-    let currentPlaying = await getCurrentlyPlaying();
+    let currentPlaying = await getCurrentlyPlaying(SpotifyAccessToken);
 
     // token expired
     if (currentPlaying.status === 401) {
         await global.fetch(req.nextUrl.origin + "/api/spotify/refresh_token");
         // retry one more time
-        currentPlaying = await getCurrentlyPlaying();
+        currentPlaying = await getCurrentlyPlaying(SpotifyAccessToken);
     }
     debugger;
     // user playing song
     if (currentPlaying.status === 200) {
         const media = await currentPlaying.json();
+
         RecentPlayback = media;
+        await Storage.setCurrentPlayback(media);
 
         return Response.json(RecentPlayback, {
             headers: {
