@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import querystring from "node:querystring";
 import Storage from "@/utils/storage";
+import * as Sentry from "@sentry/node";
 
 export async function GET(req: NextRequest, res: NextResponse) {
+    debugger;
     let refresh_token: string | null;
     if (process.env.VERCEL) {
         refresh_token = await Storage.getRefreshToken();
@@ -38,17 +40,31 @@ export async function GET(req: NextRequest, res: NextResponse) {
             },
             body: querystring.stringify({
                 grant_type: "refresh_token",
-                refresh_token,
+                refresh_token: refresh_token,
             }),
         },
     );
-
+    // debugger;
     const { access_token } = await response.json();
 
-    if (process.env.VERCEL) {
-        await Storage.setAccessToken(access_token);
-    } else {
-        process.env.SPOTIFY_ACCESS_TOKEN = access_token;
+    try {
+        if (process.env.VERCEL) {
+            await Storage.setAccessToken(access_token);
+        } else {
+            process.env.SPOTIFY_ACCESS_TOKEN = access_token;
+        }
+    } catch (e) {
+        console.error(e);
+        Sentry.captureException(e, {
+            extra: {
+                refresh_token: refresh_token,
+                access_token: access_token,
+                spotify: {
+                    client_secret: process.env.SPOTIFY_CLIENT_SECRET,
+                    client_id: process.env.SPOTIFY_CLIENT_ID,
+                },
+            },
+        });
     }
 
     return NextResponse.json({

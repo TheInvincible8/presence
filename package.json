@@ -20,6 +20,7 @@
         "@prismicio/client": "7.3.1",
         "@prismicio/next": "1.5.0",
         "@prismicio/react": "2.7.3",
+        "@sentry/node": "7.91.0",
         "@vercel/kv": "1.0.1",
         "next": "14.0.3",
         "react": "^18",
