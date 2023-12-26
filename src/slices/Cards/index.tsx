@@ -185,11 +185,13 @@ const SpotifyCard = () => {
     return <Spotify />;
 };
 const Card = ({ slice }: { slice: CardProps }): JSX.Element => {
+
+   
+
+
     if (slice.variation == "linkCard") {
         return <CardWithLink slice={slice} />;
-    }
-
-    if (slice.variation == "slide") {
+    }   if (slice.variation == "slide") {
         return <h1>slide</h1>;
     }
 
