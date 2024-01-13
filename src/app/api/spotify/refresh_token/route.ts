@@ -8,14 +8,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
     if (process.env.VERCEL) {
         refresh_token = await Storage.getRefreshToken();
     } else {
-        refresh_token = process.env.SPOTIFY_ACCESS_TOKEN || null;
+        refresh_token = process.env.SPOTIFY_REFRESH_TOKEN || null;
     }
 
     if (!refresh_token)
         return NextResponse.json(
             {
                 error: "token_unavailable",
-                url: req.nextUrl.origin + "/api/spotify/login",
                 message: "Cannot Access Spotify",
             },
             {

@@ -7,11 +7,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
     // spotify.comt?code=''
     const params = req.nextUrl.searchParams;
     const code = params.get("code") || null;
-
+    const protocol = req.headers.get("X-Forwarded-Proto") || "http";
+    const host =
+        req.headers.get("X-Forwarded-Host") ||
+        req.headers.get("host") ||
+        req.nextUrl.origin ||
+        "localhost";
     if (code) {
         const data = querystring.stringify({
             code,
-            redirect_uri: `${req.nextUrl.origin}/api/spotify/callback`,
+            redirect_uri: `${protocol}://${host}/api/spotify/callback`,
             grant_type: "authorization_code",
         });
 
@@ -42,7 +47,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         }
 
         await saveToFiles();
-        return NextResponse.redirect(req.nextUrl.origin);
+        return NextResponse.redirect(`${protocol}://${host}`);
     } else {
         return NextResponse.redirect(
             "/#" +
