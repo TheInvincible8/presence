@@ -16,7 +16,6 @@ function getCurrentlyPlaying(token: string) {
 let RecentPlayback: string | null;
 
 export async function GET(req: NextRequest, res: NextResponse) {
-    RecentPlayback = await Storage.getCurrentPlayback();
     let SpotifyAccessToken: string | null;
     const protocol = req.headers.get("X-Forwarded-Proto") || "http";
     const host =
@@ -27,6 +26,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const origin = `${protocol}://${host}`;
 
     if (process.env.VERCEL) {
+        RecentPlayback = await Storage.getCurrentPlayback();
         SpotifyAccessToken = await Storage.getAccessToken();
     } else {
         SpotifyAccessToken = process.env.SPOTIFY_ACCESS_TOKEN || null;
@@ -59,7 +59,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         const media = await currentPlaying.json();
 
         RecentPlayback = media;
-        await Storage.setCurrentPlayback(media);
+        if (process.env.VERCEL) await Storage.setCurrentPlayback(media);
 
         return Response.json(RecentPlayback, {
             headers: {
