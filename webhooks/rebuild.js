@@ -70,11 +70,6 @@ async function asyncExecCommand(command) {
 
 const server = createServer(async (req, res) => {
     // Validate the request method
-    if (req.method !== "POST") {
-        res.statusCode = 405;
-        res.end("Method Not Allowed");
-        return;
-    }
     const url = new URL(req.url, `http://localhost:${port}`);
 
     if (url.pathname + url.search !== SECRET_URL) {
