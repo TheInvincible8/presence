@@ -16,9 +16,17 @@ function getCurrentlyPlaying(token: string) {
 let RecentPlayback: string | null;
 
 export async function GET(req: NextRequest, res: NextResponse) {
-    RecentPlayback = await Storage.getCurrentPlayback();
     let SpotifyAccessToken: string | null;
+    const protocol = req.headers.get("X-Forwarded-Proto") || "http";
+    const host =
+        req.headers.get("X-Forwarded-Host") ||
+        req.headers.get("host") ||
+        req.nextUrl.origin ||
+        "localhost";
+    const origin = `${protocol}://${host}`;
+
     if (process.env.VERCEL) {
+        RecentPlayback = await Storage.getCurrentPlayback();
         SpotifyAccessToken = await Storage.getAccessToken();
     } else {
         SpotifyAccessToken = process.env.SPOTIFY_ACCESS_TOKEN || null;
@@ -28,7 +36,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         return NextResponse.json(
             {
                 error: "token_unavailable",
-                url: req.nextUrl.origin + "/api/spotify/login",
+                url: origin + "/api/spotify/login",
                 message: "Cannot Access Spotify",
             },
             {
@@ -41,7 +49,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
     // token expired
     if (currentPlaying.status === 401) {
-        await global.fetch(req.nextUrl.origin + "/api/spotify/refresh_token");
+        await global.fetch(origin + "/api/spotify/refresh_token");
         // retry one more time
         currentPlaying = await getCurrentlyPlaying(SpotifyAccessToken);
     }
@@ -51,7 +59,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         const media = await currentPlaying.json();
 
         RecentPlayback = media;
-        await Storage.setCurrentPlayback(media);
+        if (process.env.VERCEL) await Storage.setCurrentPlayback(media);
 
         return Response.json(RecentPlayback, {
             headers: {
